@@ -1,0 +1,57 @@
+# Archivos y directorios generales
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.db
+*.sqlite3
+*.env
+*.venv
+*.virtualenv
+*.tox
+*.nox
+*.coverage
+*.mypy_cache/
+.dmypy.json
+.pytest_cache/
+*.hypothesis/
+*.coverage.*
+.coverage.*
+nosetests.xml
+coverage.xml
+*.log
+*.tmp
+*.bak
+
+
+# Archivos de configuración de IDE
+.vscode/
+.idea/
+
+# Archivos generados por el editor
+*~ 
+*.swp
+*.swo
+
+
+# Configuración de FastAPI
+*.pid
+*.pkl
+
+
+# Kubernetes
+*.kube/
+*.k8s/
+
+# Archivos de logs
+*.log
+
+# Archivos específicos de PyCharm
+*.idea/
+
+# Configuración del entorno de desarrollo
+.env
+venv
+
+
+
