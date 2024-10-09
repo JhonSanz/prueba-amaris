@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from './components/modal';
-import InvestmentFundsTable from "./components/table";
-
+import FundsTable from "./components/fundTable";
+import HistoryTable from './components/historyTable';
 
 function App() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -12,11 +12,6 @@ function App() {
     setModalOpen(true);
   };
 
-  const investmentFunds = [
-    { id: 1, nombre: 'Fondo A', montoMinimo: 1000, categoria: 'Renta Fija' },
-    { id: 2, nombre: 'Fondo B', montoMinimo: 2000, categoria: 'Renta Variable' },
-    { id: 3, nombre: 'Fondo C', montoMinimo: 1500, categoria: 'Alternativos' },
-  ];
 
   return (
     <div style={{ padding: 50 }}>
@@ -24,10 +19,16 @@ function App() {
       <br />
       <button onClick={() => handleShowMessage()}>X</button>
       <h5>Fondos</h5>
-      <InvestmentFundsTable funds={investmentFunds} />
+      <FundsTable
+        setModalOpen={setModalOpen}
+        setModalMessage={setModalMessage}
+      />
       <br />
       <h5>historial</h5>
-
+      {/* <HistoryTable
+        setModalOpen={setModalOpen}
+        setModalMessage={setModalMessage}
+      /> */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}

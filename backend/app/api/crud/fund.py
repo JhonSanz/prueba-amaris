@@ -7,16 +7,33 @@ from app.database.repository.fund import (
     history_db,
     get_funds_db,
 )
+from app.database.repository.transaction import transaction_create_db
+from app.database.repository.user import user_update_db, user_get_db
+from app.database.repository.fund import get_fund_db
 
 
 # el usuario incia con 500000
 
 
 def fund_subscribe(*, db, transaction: Transaccion):
-    # obtener información del fondo para ver el monto mínimo y poder suscribirse
+    fund = get_fund_db(db=db, fund_id=transaction.fundId)
+    user = user_get_db(db=db, user_id=1)
     # if (monto_min_del_fondo > monto_cliente)
     #   raise Exception("No tiene saldo disponible para vincularse al fondo <Nombre delfondo>")
-    fund_subscribe_db(transaction=transaction, db=db)
+    subscriptions = user["subscriptions"]
+    new_subscription = {"fundId": transaction.fundId}
+    found = False
+    for subscription in subscriptions:
+        if subscription["fundId"] == new_subscription["fundId"]:
+            found = True
+            break
+
+    if not found:
+        subscriptions.append(new_subscription)
+
+    data = {":subs": subscriptions}
+    user_update_db(user_id=1, data=data)
+    transaction_create_db(transaction=transaction, db=db)
     return
 
 
@@ -29,17 +46,13 @@ def fund_unsubscribe(*, db, transaction: Transaccion):
 
 def history(*, db):
     response = history_db(db=db)
-    if "Items" not in response or not response["Items"]:
-        raise Exception(
-            status_code=404, detail="No se encontraron transacciones para este usuario."
-        )
-    return
+    if not response:
+        raise Exception("No se encontraron transacciones para este usuario.")
+    return response
 
 
 def get_funds(*, db):
     result = get_funds_db(db=db)
     if not result:
-        raise Exception(
-            status_code=404, detail="No se encontraron transacciones para este usuario."
-        )
+        raise Exception("No se encontraron fondos de inversión.")
     return result
