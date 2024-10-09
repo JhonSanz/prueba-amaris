@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 
-const FundsTable = ({ clientSubscriptions, setModalOpen, setModalMessage }) => {
+const FundsTable = ({ userId, clientSubscriptions, setModalOpen, setModalMessage }) => {
   const [funds, setFunds] = useState([]);
 
   async function getFunds() {
@@ -26,7 +26,33 @@ const FundsTable = ({ clientSubscriptions, setModalOpen, setModalMessage }) => {
     init();
   }, []);
 
-  const clientSubscriptionsFlat = clientSubscriptions.map((item) => item.fundId)
+
+  async function subscribeToFund(fundId) {
+    const data = {
+      "userId": userId,
+      "fundId": fundId,
+      "amount": 0,
+      "type": "subscription"
+    }
+    try {
+      const response = await fetch(
+        'http://localhost:8000/fund/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      console.log('Success:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  async function desubscribeToFund(fundId) {
+
+  }
 
   return (
     <div style={{ overflowX: 'auto' }}>
@@ -49,11 +75,16 @@ const FundsTable = ({ clientSubscriptions, setModalOpen, setModalMessage }) => {
               <td style={styles.td}>{fund["category"]}</td>
               <td style={styles.td}>
                 {
-                  !clientSubscriptionsFlat.includes(fund.fundId) && <button>suscribirse</button>
+                  !clientSubscriptions.includes(fund.fundId) && <button
+                    onClick={() => subscribeToFund(fund.fundId)}
+                  >suscribirse</button>
                 }
                 {
-                  clientSubscriptionsFlat.includes(fund.fundId) && (
-                    <button style={{ marginLeft: 5, backgroundColor: "red" }}>desuscribirse</button>
+                  clientSubscriptions.includes(fund.fundId) && (
+                    <button
+                      style={{ marginLeft: 5, backgroundColor: "red" }}
+                      onClick={() => desubscribeToFund(fund.fundId)}
+                    >desuscribirse</button>
                   )
                 }
               </td>

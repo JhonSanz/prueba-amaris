@@ -6,7 +6,7 @@ import HistoryTable from './components/historyTable';
 function App() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-  const [currentClient, setCurrentClient] = useState({});
+  const [currentClient, setCurrentClient] = useState(null);
 
   async function getCurrentClient(params) {
     try {
@@ -37,15 +37,18 @@ function App() {
 
   return (
     <div style={{ padding: 50 }}>
-      <h1>{currentClient.name} - {currentClient.money}</h1>
+      <h1>{currentClient?.name} - {currentClient?.money}</h1>
       <br />
       <button onClick={() => handleShowMessage()}>X</button>
       <h5>Mis Fondos</h5>
-      <FundsTable
-        setModalOpen={setModalOpen}
-        setModalMessage={setModalMessage}
-        clientSubscriptions={currentClient.subscriptions}
-      />
+      {
+        currentClient && <FundsTable
+          setModalOpen={setModalOpen}
+          setModalMessage={setModalMessage}
+          clientSubscriptions={currentClient.subscriptions.map((item) => item.fundId)}
+          userId={currentClient.userId}
+        />
+      }
       <br />
       <h5>Mi Historial</h5>
       {/* <HistoryTable

@@ -48,4 +48,5 @@ def get_funds_db(*, db):
 def get_fund_db(*, db, fund_id: str):
     table = db.Table("amaris-fund")
     response = table.get_item(Key={"fundId": fund_id})
-    return response["Items"]
+    print(response)
+    return response["Item"]

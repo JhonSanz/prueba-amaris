@@ -17,7 +17,8 @@ from app.database.repository.fund import get_fund_db
 
 def fund_subscribe(*, db, transaction: Transaccion):
     fund = get_fund_db(db=db, fund_id=transaction.fundId)
-    user = user_get_db(db=db, user_id=1)
+    user = user_get_db(db=db, user_id=transaction.userId)
+    print(fund)
     # if (monto_min_del_fondo > monto_cliente)
     #   raise Exception("No tiene saldo disponible para vincularse al fondo <Nombre delfondo>")
     subscriptions = user["subscriptions"]
@@ -32,7 +33,7 @@ def fund_subscribe(*, db, transaction: Transaccion):
         subscriptions.append(new_subscription)
 
     data = {":subs": subscriptions}
-    user_update_db(user_id=1, data=data)
+    user_update_db(user_id=transaction.userId, data=data, db=db)
     transaction_create_db(transaction=transaction, db=db)
     return
 
