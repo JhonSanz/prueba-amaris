@@ -30,31 +30,23 @@ const HistoryTable = ({ setModalOpen, setModalMessage }) => {
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            <th>PK</th>
-            <th>SK</th>
-            <th>TipoEntidad</th>
-            <th>FondoID</th>
-            <th>FondoNombre</th>
-            <th>TipoTransaccion</th>
-            <th>Monto</th>
-            <th>SaldoRestante</th>
-            <th>Fecha</th>
-            <th>Notificacion</th>
+            <th style={styles.th}>transactionId</th>
+            <th style={styles.th}>userId</th>
+            <th style={styles.th}>fundId</th>
+            <th style={styles.th}>amount</th>
+            <th style={styles.th}>type</th>
+            <th style={styles.th}>timestamp</th>
           </tr>
         </thead>
         <tbody>
           {history.map((fund) => (
             <tr key={fund.id}>
-              <td style={styles.td}>{fund["PK"]}</td>
-              <td style={styles.td}>{fund["SK"]}</td>
-              <td style={styles.td}>{fund["TipoEntidad"]}</td>
-              <td style={styles.td}>{fund["FondoID"]}</td>
-              <td style={styles.td}>{fund["FondoNombre"]}</td>
-              <td style={styles.td}>{fund["TipoTransaccion"]}</td>
-              <td style={styles.td}>{fund["Monto"]}</td>
-              <td style={styles.td}>{fund["SaldoRestante"]}</td>
-              <td style={styles.td}>{fund["Fecha"]}</td>
-              <td style={styles.td}>{fund["Notificacion"]}</td>
+              <td style={styles.td}>{fund["transactionId"]}</td>
+              <td style={styles.td}>{fund["userId"]}</td>
+              <td style={styles.td}>{fund["fundId"]}</td>
+              <td style={styles.td}>{fund["amount"]}</td>
+              <td style={styles.td}>{fund["type"]}</td>
+              <td style={styles.td}>{fund["timestamp"]}</td>
             </tr>
           ))}
         </tbody>

@@ -45,7 +45,7 @@ def fund_unsubscribe(*, db, transaction: Transaccion):
 
 
 def history(*, db):
-    response = history_db(db=db)
+    response = history_db(db=db, user_id="user_001")
     if not response:
         raise Exception("No se encontraron transacciones para este usuario.")
     return response

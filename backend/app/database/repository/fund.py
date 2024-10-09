@@ -3,6 +3,7 @@ from datetime import datetime
 from app.api.schemas.fund import FundSubscribe
 from app.api.schemas.transaction import Transaccion
 import boto3
+from boto3.dynamodb.conditions import Key, Attr
 
 
 def fund_subscribe_db(*, transaction: Transaccion, db):
@@ -30,14 +31,12 @@ def fund_unsubscribe_db(*, transaction: Transaccion, db):
     return
 
 
-def history_db(*, db):
+def history_db(*, db, user_id: str):
     table = db.Table("amaris-transaction")
 
-    response = table.query(
-        KeyConditionExpression=boto3.dynamodb.conditions.Key("PK").eq(f"Usuario#1")
-        & boto3.dynamodb.conditions.Key("SK").begins_with("TRANSACCION#")
-    )
-    return response
+    response = table.query(KeyConditionExpression=Key("userId").eq(user_id))
+    transactions = response["Items"]
+    return transactions
 
 
 def get_funds_db(*, db):

@@ -18,17 +18,17 @@ function App() {
       <h1>Cliente feliz</h1>
       <br />
       <button onClick={() => handleShowMessage()}>X</button>
-      <h5>Fondos</h5>
-      <FundsTable
-        setModalOpen={setModalOpen}
-        setModalMessage={setModalMessage}
-      />
-      <br />
-      <h5>historial</h5>
-      {/* <HistoryTable
+      <h5>Mis Fondos</h5>
+      {/* <FundsTable
         setModalOpen={setModalOpen}
         setModalMessage={setModalMessage}
       /> */}
+      <br />
+      <h5>Mi Historial</h5>
+      <HistoryTable
+        setModalOpen={setModalOpen}
+        setModalMessage={setModalMessage}
+      />
       <Modal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
