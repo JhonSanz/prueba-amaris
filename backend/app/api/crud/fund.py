@@ -32,7 +32,8 @@ def fund_subscribe(*, db, transaction: Transaccion):
     if not found:
         subscriptions.append(new_subscription)
 
-    data = {":subs": subscriptions}
+    new_money = user["money"] - fund["amount"]
+    data = {":subs": subscriptions, ":new_money": new_money}
     user_update_db(user_id=transaction.userId, data=data, db=db)
     transaction_create_db(transaction=transaction, db=db)
     return

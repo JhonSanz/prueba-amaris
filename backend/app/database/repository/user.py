@@ -15,7 +15,7 @@ def user_update_db(*, db, user_id: int, data):
     table = db.Table("amaris-users")
     table.update_item(
         Key={"userId": user_id},
-        UpdateExpression="SET subscriptions = :subs",
+        UpdateExpression="SET subscriptions = :subs, money = :new_money",
         ExpressionAttributeValues={**data},
     )
     return
