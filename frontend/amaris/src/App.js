@@ -3,6 +3,9 @@ import Modal from './components/modal';
 import FundsTable from "./components/fundTable";
 import HistoryTable from './components/historyTable';
 
+const API_URL = process.env.REACT_APP_API_URL;
+console.log('API URL:', API_URL);
+
 function App() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
@@ -11,7 +14,7 @@ function App() {
 
   async function getCurrentClient(params) {
     try {
-      const response = await fetch('http://localhost:8000/fund/get_client?client_id=user_001');
+      const response = await fetch(`${API_URL}/fund/get_client?client_id=user_001`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -30,14 +33,9 @@ function App() {
     init();
   }, []);
 
-  const handleShowMessage = () => {
-    setModalMessage('¡Este es un mensaje para el usuario!');
-    setModalOpen(true);
-  };
-
   async function getHistory() {
     try {
-      const response = await fetch('http://localhost:8000/fund/history');
+      const response = await fetch(`${API_URL}/fund/history`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }

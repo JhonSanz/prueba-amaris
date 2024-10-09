@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 
+const API_URL = process.env.REACT_APP_API_URL;
+console.log('API URL:', API_URL);
+
 
 const FundsTable = ({
   userId,
@@ -13,7 +16,7 @@ const FundsTable = ({
 
   async function getFunds() {
     try {
-      const response = await fetch('http://localhost:8000/fund/list');
+      const response = await fetch(`${API_URL}/fund/list`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -43,7 +46,7 @@ const FundsTable = ({
     }
     try {
       const response = await fetch(
-        'http://localhost:8000/fund/subscribe', {
+        `${API_URL}/fund/subscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,7 +76,7 @@ const FundsTable = ({
     }
     try {
       const response = await fetch(
-        'http://localhost:8000/fund/unsubscribe', {
+        `${API_URL}/fund/unsubscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
