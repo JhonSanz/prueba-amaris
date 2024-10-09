@@ -4,15 +4,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.utils.exc_handlers import (
     validation_exception_handler,
     general_exception_handler,
+    insuficient_money_exception_handler
 )
 from fastapi.exceptions import RequestValidationError
-
+from app.api.utils.exceptions import InsuficientMoney
 
 app = FastAPI()
 app.include_router(api_router)
 
 
 app.add_exception_handler(Exception, general_exception_handler)
+app.add_exception_handler(InsuficientMoney, insuficient_money_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 
 origins = [

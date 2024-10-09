@@ -68,13 +68,13 @@ function App() {
       }
       <br />
       <h5>Mi Historial</h5>
-      {/* <HistoryTable
+      <HistoryTable
         history={history}
         setHistory={setHistory}
         setModalOpen={setModalOpen}
         setModalMessage={setModalMessage}
         getHistory={getHistory}
-      /> */}
+      />
       <Modal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}

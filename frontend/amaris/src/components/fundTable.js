@@ -18,10 +18,10 @@ const FundsTable = ({
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
       const data = await response.json();
-      console.log(data)
       setFunds(data.result);
     } catch (error) {
-      console.error('Error fetching investment funds:', error);
+      setModalOpen(true)
+      setModalMessage('Error fetching investment funds');
       return null;
     }
   };
@@ -51,11 +51,16 @@ const FundsTable = ({
         body: JSON.stringify(data),
       });
       const result = await response.json();
-      console.log('Success:', result);
+      if (!result.success) {
+        setModalOpen(true)
+        setModalMessage(result.message);
+      }
       await getCurrentClient();
       await getHistory();
     } catch (error) {
-      console.error('Error:', error);
+      setModalOpen(true)
+      setModalMessage('Error fetching investment funds');
+      return null
     }
   }
 
@@ -75,11 +80,18 @@ const FundsTable = ({
         },
         body: JSON.stringify(data),
       });
+      if (!response.ok) {
+        setModalOpen(true)
+        setModalMessage('Error fetching investment funds');
+
+      }
       const result = await response.json();
       console.log('Success:', result);
       await getCurrentClient();
       await getHistory();
     } catch (error) {
+      setModalOpen(true)
+      setModalMessage('Error fetching investment funds');
       console.error('Error:', error);
     }
   }

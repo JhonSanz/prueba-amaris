@@ -10,9 +10,7 @@ from app.database.repository.fund import (
 from app.database.repository.transaction import transaction_create_db
 from app.database.repository.user import user_update_db, user_get_db
 from app.database.repository.fund import get_fund_db
-
-
-# el usuario incia con 500000
+from app.api.utils.exceptions import InsuficientMoney
 
 
 def fund_subscribe(*, db, transaction: Transaccion):
@@ -20,8 +18,8 @@ def fund_subscribe(*, db, transaction: Transaccion):
     user = user_get_db(db=db, user_id=transaction.userId)
 
     if fund["amount"] > user["money"]:
-        raise Exception(
-            f"No tiene saldo disponible para vincularse al fondo {fund.name}"
+        raise InsuficientMoney(
+            f"No tiene saldo disponible para vincularse al fondo {fund['name']}"
         )
 
     subscriptions = user["subscriptions"]

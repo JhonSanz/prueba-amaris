@@ -11,7 +11,7 @@ def transaction_create_db(*, transaction: Transaccion, db):
     transaction_id = str(uuid4())
     item = {
         "transactionId": transaction_id,
-        "userId": transaction.userId,
+        "userId": f"{transaction.userId}#{transaction_id}",
         "fundId": transaction.fundId,
         "amount": Decimal(transaction.amount),
         "type": transaction.type,

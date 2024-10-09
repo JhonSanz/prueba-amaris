@@ -1,2 +1,2 @@
-class ExpenseNotFoundException(Exception):
+class InsuficientMoney(Exception):
     pass
