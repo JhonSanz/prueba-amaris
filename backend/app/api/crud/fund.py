@@ -56,3 +56,8 @@ def get_funds(*, db):
     if not result:
         raise Exception("No se encontraron fondos de inversión.")
     return result
+
+
+def get_client(*, db, client_id: str):
+    user = user_get_db(db=db, user_id=client_id)
+    return user

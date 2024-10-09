@@ -25,6 +25,15 @@ async def get_funds(
     return std_response(status_code=status.HTTP_200_OK, ok=True, msg="", data=result)
 
 
+@router.get("/get_client", response_model=StandardResponse)
+async def get_funds(
+    client_id: str,
+    db=Depends(get_db),
+):
+    result = fund_crud.get_client(db=db, client_id=client_id)
+    return std_response(status_code=status.HTTP_200_OK, ok=True, msg="", data=result)
+
+
 @router.get("/history", response_model=StandardResponse)
 async def get_history(
     db=Depends(get_db),

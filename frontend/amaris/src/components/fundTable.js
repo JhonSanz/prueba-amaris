@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 
-const FundsTable = ({ setModalOpen, setModalMessage }) => {
+const FundsTable = ({ clientSubscriptions, setModalOpen, setModalMessage }) => {
   const [funds, setFunds] = useState([]);
 
   async function getFunds() {
@@ -26,6 +26,8 @@ const FundsTable = ({ setModalOpen, setModalMessage }) => {
     init();
   }, []);
 
+  const clientSubscriptionsFlat = clientSubscriptions.map((item) => item.fundId)
+
   return (
     <div style={{ overflowX: 'auto' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -40,14 +42,20 @@ const FundsTable = ({ setModalOpen, setModalMessage }) => {
         </thead>
         <tbody>
           {funds.map((fund) => (
-            <tr key={fund.id}>
+            <tr key={fund.fundId}>
               <td style={styles.td}>{fund["fundId"]}</td>
               <td style={styles.td}>{fund["name"]}</td>
               <td style={styles.td}>${fund["amount"]}</td>
               <td style={styles.td}>{fund["category"]}</td>
               <td style={styles.td}>
-                <button>suscribirse</button>
-                <button style={{ marginLeft: 5, backgroundColor: "red" }}>desuscribirse</button>
+                {
+                  !clientSubscriptionsFlat.includes(fund.fundId) && <button>suscribirse</button>
+                }
+                {
+                  clientSubscriptionsFlat.includes(fund.fundId) && (
+                    <button style={{ marginLeft: 5, backgroundColor: "red" }}>desuscribirse</button>
+                  )
+                }
               </td>
             </tr>
           ))}
