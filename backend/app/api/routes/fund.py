@@ -7,9 +7,14 @@ from app.api.schemas.transaction import Transaccion
 from app.api.schemas.base import StandardResponse, std_response
 from app.database.connection import get_db
 from app.api.crud import fund as fund_crud
-
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
+
+
+@router.get("/health")
+async def health():
+    return JSONResponse(status_code=200, content={"status": "healthy"})
 
 
 @router.get("/list", response_model=StandardResponse)
