@@ -54,7 +54,6 @@ function App() {
     <div style={{ padding: 50 }}>
       <h1>{currentClient?.name} - {currentClient?.money}</h1>
       <br />
-      <button onClick={() => handleShowMessage()}>X</button>
       <h5>Mis Fondos</h5>
       {
         currentClient && <FundsTable
