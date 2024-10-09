@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react';
 
 
-const FundsTable = ({ userId, clientSubscriptions, setModalOpen, setModalMessage }) => {
+const FundsTable = ({
+  userId,
+  clientSubscriptions,
+  getCurrentClient,
+  getHistory,
+  setModalOpen,
+  setModalMessage
+}) => {
   const [funds, setFunds] = useState([]);
 
   async function getFunds() {
@@ -45,13 +52,36 @@ const FundsTable = ({ userId, clientSubscriptions, setModalOpen, setModalMessage
       });
       const result = await response.json();
       console.log('Success:', result);
+      await getCurrentClient();
+      await getHistory();
     } catch (error) {
       console.error('Error:', error);
     }
   }
 
   async function desubscribeToFund(fundId) {
-
+    const data = {
+      "userId": userId,
+      "fundId": fundId,
+      "amount": 0,
+      "type": "unsubscription"
+    }
+    try {
+      const response = await fetch(
+        'http://localhost:8000/fund/unsubscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      console.log('Success:', result);
+      await getCurrentClient();
+      await getHistory();
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 
   return (

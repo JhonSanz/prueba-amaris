@@ -18,9 +18,12 @@ from app.database.repository.fund import get_fund_db
 def fund_subscribe(*, db, transaction: Transaccion):
     fund = get_fund_db(db=db, fund_id=transaction.fundId)
     user = user_get_db(db=db, user_id=transaction.userId)
-    print(fund)
-    # if (monto_min_del_fondo > monto_cliente)
-    #   raise Exception("No tiene saldo disponible para vincularse al fondo <Nombre delfondo>")
+
+    if fund["amount"] > user["money"]:
+        raise Exception(
+            f"No tiene saldo disponible para vincularse al fondo {fund.name}"
+        )
+
     subscriptions = user["subscriptions"]
     new_subscription = {"fundId": transaction.fundId}
     found = False
@@ -40,9 +43,24 @@ def fund_subscribe(*, db, transaction: Transaccion):
 
 
 def fund_unsubscribe(*, db, transaction: Transaccion):
-    # obtener información del fondo para ver el monto mínimo y devolverlo al cliente
+    fund = get_fund_db(db=db, fund_id=transaction.fundId)
+    user = user_get_db(db=db, user_id=transaction.userId)
 
-    fund_unsubscribe_db(transaction=transaction)
+    subscriptions = user["subscriptions"]
+    subscription_found = None
+    for subscription in subscriptions:
+        if subscription["fundId"] == transaction.fundId:
+            subscription_found = subscription
+            break
+
+    if not subscription_found:
+        raise Exception(f"El usuario no está suscrito al fondo {fund['name']}")
+
+    subscriptions.remove(subscription_found)
+    new_money = user["money"] + fund["amount"]
+    data = {":subs": subscriptions, ":new_money": new_money}
+    user_update_db(user_id=transaction.userId, data=data, db=db)
+    transaction_create_db(transaction=transaction, db=db)
     return
 
 

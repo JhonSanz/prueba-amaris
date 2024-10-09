@@ -1,22 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 
-const HistoryTable = ({ setModalOpen, setModalMessage }) => {
-  const [history, setHistory] = useState([]);
-
-  async function getHistory() {
-    try {
-      const response = await fetch('http://localhost:8000/fund/history');
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
-      const data = await response.json();
-      setHistory(data.result);
-    } catch (error) {
-      console.error('Error fetching investment funds:', error);
-      return null;
-    }
-  };
+const HistoryTable = ({ history, setHistory, getHistory, setModalOpen, setModalMessage }) => {
 
   useEffect(() => {
     async function init() {

@@ -7,6 +7,7 @@ function App() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [currentClient, setCurrentClient] = useState(null);
+  const [history, setHistory] = useState([]);
 
   async function getCurrentClient(params) {
     try {
@@ -34,6 +35,20 @@ function App() {
     setModalOpen(true);
   };
 
+  async function getHistory() {
+    try {
+      const response = await fetch('http://localhost:8000/fund/history');
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      const data = await response.json();
+      setHistory(data.result);
+    } catch (error) {
+      console.error('Error fetching investment funds:', error);
+      return null;
+    }
+  };
+
 
   return (
     <div style={{ padding: 50 }}>
@@ -47,13 +62,18 @@ function App() {
           setModalMessage={setModalMessage}
           clientSubscriptions={currentClient.subscriptions.map((item) => item.fundId)}
           userId={currentClient.userId}
+          getCurrentClient={getCurrentClient}
+          getHistory={getHistory}
         />
       }
       <br />
       <h5>Mi Historial</h5>
       {/* <HistoryTable
+        history={history}
+        setHistory={setHistory}
         setModalOpen={setModalOpen}
         setModalMessage={setModalMessage}
+        getHistory={getHistory}
       /> */}
       <Modal
         isOpen={isModalOpen}
