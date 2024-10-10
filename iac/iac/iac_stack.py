@@ -17,29 +17,65 @@ class IacStack(Stack):
         # VPC
         vpc = ec2.Vpc(self, "MyVpc", max_azs=2)
 
-        table = dynamodb.Table(
+        table_fund = dynamodb.Table(
             self,
-            "MyDynamoTable",
+            "AmarisFundTable",
+            table_name="amaris-fund",  # Nombre de la tabla
             partition_key=dynamodb.Attribute(
-                name="id", type=dynamodb.AttributeType.STRING
+                name="fundId", type=dynamodb.AttributeType.STRING
             ),
             billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+        )
+
+        table_transaction = dynamodb.Table(
+            self,
+            "AmarisTransactionTable",
+            table_name="amaris-transaction",  # Nombre de la tabla
+            partition_key=dynamodb.Attribute(
+                name="userId", type=dynamodb.AttributeType.STRING
+            ),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+        )
+
+        table_users = dynamodb.Table(
+            self,
+            "AmarisUsersTable",
+            table_name="amaris-users",  # Nombre de la tabla
+            partition_key=dynamodb.Attribute(
+                name="userId", type=dynamodb.AttributeType.STRING
+            ),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+        )
+
+        dynamodb_policy_fund = iam.PolicyStatement(
+            actions=["dynamodb:*"],
+            resources=[table_fund.table_arn],
+        )
+        
+        dynamodb_policy_transaction = iam.PolicyStatement(
+            actions=["dynamodb:*"],
+            resources=[table_transaction.table_arn],
+        )
+        
+        dynamodb_policy_users = iam.PolicyStatement(
+            actions=["dynamodb:*"],
+            resources=[table_users.table_arn],
         )
 
         # ECS Cluster
         cluster = ecs.Cluster(self, "MyCluster", vpc=vpc)
 
-        dynamodb_policy = iam.PolicyStatement(
-            actions=["dynamodb:*"],
-            resources=[table.table_arn],  # Especifica el ARN de la tabla
-        )
         # Rol de ejecución de la tarea
         backend_task_role = iam.Role(
             self,
             "BackendTaskRole",
             assumed_by=iam.ServicePrincipal("ecs-tasks.amazonaws.com"),
             inline_policies={
-                "DynamoDBAccess": iam.PolicyDocument(statements=[dynamodb_policy])
+                "DynamoDBAccess": iam.PolicyDocument(statements=[
+                    dynamodb_policy_fund,
+                    dynamodb_policy_transaction,
+                    dynamodb_policy_users
+                ])
             },
         )
 

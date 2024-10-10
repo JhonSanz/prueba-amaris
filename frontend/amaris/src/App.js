@@ -14,7 +14,7 @@ function App() {
 
   async function getCurrentClient(params) {
     try {
-      const response = await fetch(`${API_URL}/fund/get_client?client_id=user_001`);
+      const response = await fetch(`/fund/get_client?client_id=user_001`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -35,7 +35,7 @@ function App() {
 
   async function getHistory() {
     try {
-      const response = await fetch(`${API_URL}/fund/history`);
+      const response = await fetch(`/fund/history`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }

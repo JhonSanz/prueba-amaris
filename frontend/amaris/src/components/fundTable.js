@@ -16,7 +16,7 @@ const FundsTable = ({
 
   async function getFunds() {
     try {
-      const response = await fetch(`${API_URL}/fund/list`);
+      const response = await fetch(`/fund/list`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -46,7 +46,7 @@ const FundsTable = ({
     }
     try {
       const response = await fetch(
-        `${API_URL}/fund/subscribe`, {
+        `/fund/subscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ const FundsTable = ({
     }
     try {
       const response = await fetch(
-        `${API_URL}/fund/unsubscribe`, {
+        `/fund/unsubscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
