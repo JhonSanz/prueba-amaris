@@ -125,3 +125,8 @@ Esto debería
 ### 👇🚨🚨⚠️⚠️ IMPORTANTE ⚠️⚠️🚨🚨👇
 
 > **Para acceder a la aplicación** lo debemos hacer mediante el balanceador de carga. Entonces hay que buscar el balanceador en EC2 y copiar el DNS en una pestaña del navegador
+
+
+# Notas finales
+
+Esta fue la explicación del punto 1 de la prueba, la solución del segundo punto está en README_2.md
