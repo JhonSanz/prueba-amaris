@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const API_URL = process.env.REACT_APP_API_URL;
-console.log('API URL:', API_URL);
+import '../styles/fundsTable.css';
 
 
 const FundsTable = ({
@@ -23,11 +21,11 @@ const FundsTable = ({
       const data = await response.json();
       setFunds(data.result);
     } catch (error) {
-      setModalOpen(true)
+      setModalOpen(true);
       setModalMessage('Error fetching investment funds');
       return null;
     }
-  };
+  }
 
   useEffect(() => {
     async function init() {
@@ -36,13 +34,12 @@ const FundsTable = ({
     init();
   }, []);
 
-
   async function subscribeToFund(fundId) {
     const data = {
-      "userId": userId,
-      "fundId": fundId,
-      "amount": 0,
-      "type": "subscription"
+      userId: userId,
+      fundId: fundId,
+      amount: 0,
+      type: "subscription"
     }
     try {
       const response = await fetch(
@@ -55,24 +52,24 @@ const FundsTable = ({
       });
       const result = await response.json();
       if (!result.success) {
-        setModalOpen(true)
+        setModalOpen(true);
         setModalMessage(result.message);
       }
       await getCurrentClient();
       await getHistory();
     } catch (error) {
-      setModalOpen(true)
+      setModalOpen(true);
       setModalMessage('Error fetching investment funds');
-      return null
+      return null;
     }
   }
 
   async function desubscribeToFund(fundId) {
     const data = {
-      "userId": userId,
-      "fundId": fundId,
-      "amount": 0,
-      "type": "unsubscription"
+      userId: userId,
+      fundId: fundId,
+      amount: 0,
+      type: "unsubscription"
     }
     try {
       const response = await fetch(
@@ -84,52 +81,51 @@ const FundsTable = ({
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        setModalOpen(true)
+        setModalOpen(true);
         setModalMessage('Error fetching investment funds');
-
       }
       const result = await response.json();
       console.log('Success:', result);
       await getCurrentClient();
       await getHistory();
     } catch (error) {
-      setModalOpen(true)
+      setModalOpen(true);
       setModalMessage('Error fetching investment funds');
       console.error('Error:', error);
     }
   }
 
   return (
-    <div style={{ overflowX: 'auto' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <div className="funds-table-container">
+      <table className="funds-table">
         <thead>
           <tr>
-            <th style={styles.th}>ID</th>
-            <th style={styles.th}>Nombre</th>
-            <th style={styles.th}>Monto Mínimo de Vinculación</th>
-            <th style={styles.th}>Categoría</th>
-            <th style={styles.th}>actions</th>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Monto Mínimo de Vinculación</th>
+            <th>Categoría</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {funds.map((fund) => (
             <tr key={fund.fundId}>
-              <td style={styles.td}>{fund["fundId"]}</td>
-              <td style={styles.td}>{fund["name"]}</td>
-              <td style={styles.td}>${fund["amount"]}</td>
-              <td style={styles.td}>{fund["category"]}</td>
-              <td style={styles.td}>
+              <td>{fund.fundId}</td>
+              <td>{fund.name}</td>
+              <td>${fund.amount}</td>
+              <td>{fund.category}</td>
+              <td>
                 {
                   !clientSubscriptions.includes(fund.fundId) && <button
                     onClick={() => subscribeToFund(fund.fundId)}
-                  >suscribirse</button>
+                  >Suscribirse</button>
                 }
                 {
                   clientSubscriptions.includes(fund.fundId) && (
                     <button
-                      style={{ marginLeft: 5, backgroundColor: "red" }}
+                      className="unsubscribe-button"
                       onClick={() => desubscribeToFund(fund.fundId)}
-                    >desuscribirse</button>
+                    >Desuscribirse</button>
                   )
                 }
               </td>
@@ -137,22 +133,8 @@ const FundsTable = ({
           ))}
         </tbody>
       </table>
-
     </div>
   );
-};
-
-const styles = {
-  th: {
-    border: '1px solid #dddddd',
-    textAlign: 'left',
-    padding: '8px',
-  },
-  td: {
-    border: '1px solid #dddddd',
-    textAlign: 'left',
-    padding: '8px',
-  },
 };
 
 export default FundsTable;

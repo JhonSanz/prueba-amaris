@@ -1,0 +1,36 @@
+/* Estilos generales para la tabla */
+.funds-table-container {
+  overflow-x: auto;
+}
+
+.funds-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.funds-table th,
+.funds-table td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+/* Encabezados de la tabla */
+.funds-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+/* Botón de desuscribirse */
+.unsubscribe-button {
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.unsubscribe-button:hover {
+  background-color: darkred;
+}

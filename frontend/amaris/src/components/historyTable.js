@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../styles/fundsTable.css';
 
 
 const HistoryTable = ({ history, setHistory, getHistory, setModalOpen, setModalMessage }) => {
@@ -11,46 +12,33 @@ const HistoryTable = ({ history, setHistory, getHistory, setModalOpen, setModalM
   }, []);
 
   return (
-    <div style={{ overflowX: 'auto' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <div className="history-table-container">
+      <table className="history-table">
         <thead>
           <tr>
-            <th style={styles.th}>transactionId</th>
-            <th style={styles.th}>userId</th>
-            <th style={styles.th}>fundId</th>
-            <th style={styles.th}>amount</th>
-            <th style={styles.th}>type</th>
-            <th style={styles.th}>timestamp</th>
+            <th>Transaction ID</th>
+            <th>User ID</th>
+            <th>Fund ID</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Timestamp</th>
           </tr>
         </thead>
         <tbody>
           {history.map((fund) => (
             <tr key={fund.id}>
-              <td style={styles.td}>{fund["transactionId"]}</td>
-              <td style={styles.td}>{fund["userId"]}</td>
-              <td style={styles.td}>{fund["fundId"]}</td>
-              <td style={styles.td}>{fund["amount"]}</td>
-              <td style={styles.td}>{fund["type"]}</td>
-              <td style={styles.td}>{fund["timestamp"]}</td>
+              <td>{fund.transactionId}</td>
+              <td>{fund.userId}</td>
+              <td>{fund.fundId}</td>
+              <td>{fund.amount}</td>
+              <td>{fund.type}</td>
+              <td>{fund.timestamp}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
   );
-};
-
-const styles = {
-  th: {
-    border: '1px solid #dddddd',
-    textAlign: 'left',
-    padding: '8px',
-  },
-  td: {
-    border: '1px solid #dddddd',
-    textAlign: 'left',
-    padding: '8px',
-  },
 };
 
 export default HistoryTable;
